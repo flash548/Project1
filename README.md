@@ -9,6 +9,7 @@ Your task is to implment a very basic API that allows CRUD operations on of "peo
 database (so get all people, get a person by their UUID, update a person by their UUD, add a new person, and delete a person by their UUID).
 
 A few things to help:
+
     - Store the entities in a table called "person"
     - Make sure you use snake case for column names (e.g. first_name) just in the database
     - These CRUD endpoints should be under /person  (so a GET to /person would list all person entities in JSON)
