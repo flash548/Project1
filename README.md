@@ -5,8 +5,8 @@
 
 This is a repo that is templated out to use Java 11, SpringBoot, and PostgreSQL database.
 
-Your task is to implment a very basic API that allows CRUD operations on of "people" to the 
-database (so get all people, get a person by their UUID, update a person by their UUD, add a new person, and delete a person by their UUID).
+Your task is to implment a very basic API that allows CRUD operations of "people" to the 
+database (so get all people (GET), get a person by their UUID (GET), update a person by their UUID (PUT), add a new person (POST), and delete a person by their UUID (DELETE) ).
 
 A few things to help:
 
