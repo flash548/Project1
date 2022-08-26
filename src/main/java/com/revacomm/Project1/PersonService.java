@@ -1,4 +1,4 @@
-package com.example.restservice;
+package com.revacomm.Project1;
 
 import java.util.List;
 import java.util.Optional;

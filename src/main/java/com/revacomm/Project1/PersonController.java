@@ -1,10 +1,11 @@
 // Seems to designate path
-package com.example.restservice;
+package com.revacomm.Project1;
 
 // This... seems to auto increment? Look into it for more detail
 import java.util.concurrent.atomic.AtomicLong;
 
 // Handles... routing and request parameter handling?
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,17 +33,15 @@ import java.sql.Statement;
 
 @RestController
 public class PersonController {
-    //@Autowired
+    @Autowired
     private PersonRepository personRepository;
 
     private final AtomicLong counter = new AtomicLong();
 
-    /*
     @GetMapping("/getAllEmployees")
-    public List<Person> getAllEmployees() {
+    public Object getAllEmployees() {
         return personRepository.findAll();
     }
-     */
 
     @GetMapping("/person")
     // This request-param annotation

@@ -1,5 +1,4 @@
-//package com.revacomm.Project1;
-package com.example.restservice;
+package com.revacomm.Project1;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

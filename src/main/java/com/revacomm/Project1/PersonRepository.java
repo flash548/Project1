@@ -1,5 +1,5 @@
 // What even does this line do?
-package com.example.restservice;
+package com.revacomm.Project1;
 
 // Is this necessary? Copy pasted https://www.codejava.net/frameworks/spring/understand-spring-data-jpa-with-simple-example
 import java.util.List;
