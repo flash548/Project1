@@ -21,15 +21,12 @@ import org.springframework.web.bind.annotation.PathVariable;
     To-Do List
         - Migrate the repository calls controller --> service
         - Implement the POST route to create resources
-        - Implement to PUT route to update resources
- */
+*/
 
 @RestController
 public class PersonController {
     @Autowired
     private PersonRepository personRepository;
-
-    private final AtomicLong counter = new AtomicLong();
 
     // Returns all records
     @GetMapping("/person")
@@ -43,16 +40,24 @@ public class PersonController {
         return personRepository.findById(id);
     }
 
-    // TO DO :: This should update resources
-    @PutMapping("/person/{id}")
-    public Person updatePerson(@PathVariable int id){
-        return new Person(id, "Tester", "Who Is Updated", 25);
+    // TO DO :: This should create new resource
+    //     @PostMapping("/person/{id}")
+    @PostMapping("/person/")
+    public void createPerson(@RequestParam(value="firstName", defaultValue="FirstName") String firstName,
+                             @RequestParam(value="lastName", defaultValue="LastName") String lastName,
+                             @RequestParam(value="age", defaultValue="0") String age){
+        //Person TestDude = new Person(firstName, lastName, Integer.valueOf(age));
+        //personRepository.save(TestDude);
     }
 
-    // TO DO :: This should create new resource
-    @PostMapping("/person/{id}")
-    public Person createPerson(@PathVariable int id){
-        return new Person(id, "Tester", "Who Is New", 25);
+    // TO DO :: This should update resources
+    @PutMapping("/person/{id}")
+    public void updatePerson(@PathVariable int id,
+                               @RequestParam(value="firstName", defaultValue="FirstName") String firstName,
+                               @RequestParam(value="lastName", defaultValue="LastName") String lastName,
+                               @RequestParam(value="age", defaultValue="0") String age){
+        Person updatedPerson = new Person(id, firstName, lastName, Integer.valueOf(age));
+        personRepository.save(updatedPerson);
     }
 
     // Swapped to void to avoid errors but is that kosher or should there be some sort of "receipt of deletion"
