@@ -1,10 +1,11 @@
 // Seems to designate path
-package com.example.restservice;
+package com.revacomm.Project1;
 
 // This... seems to auto increment? Look into it for more detail
 import java.util.concurrent.atomic.AtomicLong;
 
 // Handles... routing and request parameter handling?
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,10 +18,22 @@ import org.springframework.web.bind.annotation.PutMapping;
 // Allows us to take in path variable, so /person/{somevalue}
 import org.springframework.web.bind.annotation.PathVariable;
 
+/*
+    https://www.codejava.net/frameworks/spring/understand-spring-data-jpa-with-simple-example
+    https://www.codejava.net/frameworks/spring-boot/connect-to-postgresql-database-examples
+ */
+
 @RestController
 public class PersonController {
+    @Autowired
+    private PersonRepository personRepository;
 
     private final AtomicLong counter = new AtomicLong();
+
+    @GetMapping("/getAllEmployees")
+    public Object getAllEmployees() {
+        return personRepository.findAll();
+    }
 
     @GetMapping("/person")
     // This request-param annotation
@@ -48,5 +61,5 @@ public class PersonController {
     public Person deletePerson(@PathVariable int id){
         return new Person(id, "Deleted", "Deleterson", 0);
     }
-
 }
+
