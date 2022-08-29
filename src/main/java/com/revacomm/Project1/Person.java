@@ -22,7 +22,6 @@ public class Person {
     private String lastName;
     private int age;
 
-
     public String toString() {
         return "Name: " + this.getFirstName() + " " + this.getLastName() + " (age: " + this.getAge() + ", id: " + this.getId() + ")";
     }

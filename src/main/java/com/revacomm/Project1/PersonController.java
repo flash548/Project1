@@ -43,14 +43,13 @@ public class PersonController {
         return personRepository.findById(id);
     }
 
-    // TO DO
-    // Should this be at a specific ID or just at /person then the ID gets assigned
+    // TO DO :: This should update resources
     @PutMapping("/person/{id}")
     public Person updatePerson(@PathVariable int id){
         return new Person(id, "Tester", "Who Is Updated", 25);
     }
 
-    // TO DO
+    // TO DO :: This should create new resource
     @PostMapping("/person/{id}")
     public Person createPerson(@PathVariable int id){
         return new Person(id, "Tester", "Who Is New", 25);
