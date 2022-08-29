@@ -30,12 +30,12 @@ public class PersonController {
 
     private final AtomicLong counter = new AtomicLong();
 
-    @GetMapping("/getAllEmployees")
+    @GetMapping("/person")
     public Object getAllEmployees() {
         return personRepository.findAll();
     }
 
-    @GetMapping("/person")
+    @GetMapping("/personTemp")
     // This request-param annotation
     public Person getPerson(@RequestParam(value="firstName", defaultValue="defaultFirst") String firstName) {
         return new Person(1, firstName, "Doherty", 25);
