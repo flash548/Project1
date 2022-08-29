@@ -1,15 +1,14 @@
-// Seems to designate path
 package com.revacomm.Project1;
 
 // This... seems to auto increment? Look into it for more detail
 import java.util.concurrent.atomic.AtomicLong;
 
-// Handles... routing and request parameter handling?
+// Handles... routing and request parameter handling
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-// Imports for get-post-put-delete
+// Handles... get-post-put-delete
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +32,11 @@ public class PersonController {
     @GetMapping("/person")
     public Object getAllEmployees() {
         return personRepository.findAll();
+    }
+
+    @GetMapping("/tryGetID/{LastName}")
+    public Object tryGetID(@PathVariable String LastName) {
+        return personRepository.findByLastName(LastName);
     }
 
     @GetMapping("/personTemp")

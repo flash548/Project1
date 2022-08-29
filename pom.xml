@@ -50,10 +50,6 @@
 		<!-- These next two dependencies pulled in due to link below -->
 		<!-- Not yet sure if both will be necessary -->
 		<!-- https://www.codejava.net/frameworks/spring-boot/connect-to-postgresql-database-examples -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
