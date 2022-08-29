@@ -11,8 +11,6 @@ import org.springframework.context.ApplicationContext;
 public class Project1Application {
 
 	public static void main(String[] args) {
-		ApplicationContext ctx = SpringApplication.run(Project1Application.class, args);
-		// copy pasted // adapted, unsure what if anything this accomplishes
-		//ctx.getBean("personService", PersonService.class);
+		SpringApplication.run(Project1Application.class, args);
 	}
 }

@@ -18,18 +18,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 // Allows us to take in path variable, so /person/{somevalue}
 import org.springframework.web.bind.annotation.PathVariable;
 
-// from https://www.codejava.net/frameworks/spring/understand-spring-data-jpa-with-simple-example
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-// https://www.codejava.net/frameworks/spring-boot/connect-to-postgresql-database-examples
-import org.springframework.jdbc.core.JdbcTemplate;
-import java.util.List;
-
-//
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+/*
+    https://www.codejava.net/frameworks/spring/understand-spring-data-jpa-with-simple-example
+    https://www.codejava.net/frameworks/spring-boot/connect-to-postgresql-database-examples
+ */
 
 @RestController
 public class PersonController {
@@ -68,57 +60,6 @@ public class PersonController {
     @DeleteMapping("/person/{id}")
     public Person deletePerson(@PathVariable int id){
         return new Person(id, "Deleted", "Deleterson", 0);
-    }
-
-    @GetMapping("/test")
-    public void testFunction(Person person){
-        System.out.println("Test Route Triggered");
-
-
-        //List<Person> listPeople = personRepo.findAll();
-        //person.addAttribute("listPeople", listPeople);
-
-        // from https://www.codejava.net/frameworks/spring/understand-spring-data-jpa-with-simple-example
-        /*
-        AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext();
-        appContext.scan("com.example.restservice;");
-        appContext.refresh();
-        PersonService personService = (PersonService) appContext.getBean("personService");
-        personService.test();
-         */
-
-    }
-
-    @GetMapping("/test2")
-    public Person testFunction2(){
-        try{
-            Class.forName("org.postgresql.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/testdb","mccoy", "");
-            System.out.println("WOO");
-
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM person;" );
-            while ( rs.next() ) {
-                int id = rs.getInt("id");
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                int age  = rs.getInt("age");
-
-                System.out.println( "ID = " + id );
-                System.out.println( "Last Name = " + firstName );
-                System.out.println( "First Name = " + lastName );
-                System.out.println( "Age = " + age );
-                System.out.println();
-            }
-
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-            System.exit(0);
-        }
-
-        Person johnLennon = new Person(22, "John", "Lennon", 55);
-        System.out.println(johnLennon);
-        return johnLennon;
     }
 }
 
