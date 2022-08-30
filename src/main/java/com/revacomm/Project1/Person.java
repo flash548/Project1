@@ -14,14 +14,19 @@ import javax.persistence.*;
 @Entity
 @Table(name = "person")
 public class Person {
-
-    // Class attributes
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String firstName;
     private String lastName;
     private int age;
+
+    // Created a constructor to handle "I have all the parameters but an ID" and let ID auto-generate
+    public Person(String firstName, String lastName, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+    }
 
     public String toString() {
         return "Name: " + this.getFirstName() + " " + this.getLastName() + " (age: " + this.getAge() + ", id: " + this.getId() + ")";
