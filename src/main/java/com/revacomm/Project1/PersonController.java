@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /*
-    To-Do List
-        - Migrate the repository calls controller --> service
-        - Implement the POST route to create resources
+  To-Do List
+    - Migrate the repository calls controller --> service
+    - Consider if there's a way to make update use original value in cases where not all params provided
 */
 
 @RestController
@@ -40,17 +40,17 @@ public class PersonController {
         return personRepository.findById(id);
     }
 
-    // TO DO :: This should create new resource
-    //     @PostMapping("/person/{id}")
+    // Create Person
     @PostMapping("/person/")
     public void createPerson(@RequestParam(value="firstName", defaultValue="FirstName") String firstName,
                              @RequestParam(value="lastName", defaultValue="LastName") String lastName,
                              @RequestParam(value="age", defaultValue="0") String age){
-        //Person TestDude = new Person(firstName, lastName, Integer.valueOf(age));
-        //personRepository.save(TestDude);
+        Person TestDude = new Person(firstName, lastName, Integer.valueOf(age));
+        personRepository.save(TestDude);
     }
 
-    // TO DO :: This should update resources
+    // Update Person
+    // This works, but is there a way to make defaultValue=OriginalValue ?
     @PutMapping("/person/{id}")
     public void updatePerson(@PathVariable int id,
                                @RequestParam(value="firstName", defaultValue="FirstName") String firstName,
@@ -60,6 +60,7 @@ public class PersonController {
         personRepository.save(updatedPerson);
     }
 
+    // Delete Person
     // Swapped to void to avoid errors but is that kosher or should there be some sort of "receipt of deletion"
     @DeleteMapping("/person/{id}")
     public void deletePerson(@PathVariable int id){
