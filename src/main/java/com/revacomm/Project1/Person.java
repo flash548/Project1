@@ -29,6 +29,6 @@ public class Person {
     }
 
     public String toString() {
-        return "Name: " + this.getFirstName() + " " + this.getLastName() + " (age: " + this.getAge() + ", id: " + this.getId() + ")";
+        return "Name: " + this.getFirstName() + " " + this.getLastName() + " (age: " + this.getAge() + ")";
     }
 }
