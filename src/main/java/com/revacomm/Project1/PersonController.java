@@ -16,44 +16,48 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 /*
   To-Do List
-    - Migrate the repository calls controller --> service
-    - Consider if there's a way to make update use original value in cases where not all params provided
+    - Shift DB create // delete code elsewhere then drop the personRepo import
+    - Testing
 */
 
 @RestController
 public class PersonController {
+    // Almost ready to drop this as things have migrated to service, only used in DB build/teardown
+    // Shift to service and / or go and make it a startup function
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private PersonService personService;
 
     // Returns all records
     @GetMapping("/person")
     public Object getAllEmployees() {
-        return personRepository.findAll();
+        return personService.getAllEmployees();
     }
 
     // Returns all records matching ID parameter from path
     @GetMapping("/person/{id}")
     public Object getPerson(@PathVariable int id){
-        return personRepository.findById(id);
+        return personService.getEmployeeByID(id);
     }
 
     // Create Person
     // Note :: Pass parameters via JSON in PostMan to test this, but not path variables like before
     @PostMapping("/person/")
     public ResponseEntity<Person> createPerson(@RequestBody Person requestedPerson){
-        //System.out.println(requestedPerson);
-        Person newPerson = personRepository.save(requestedPerson);
-        return new ResponseEntity<>(newPerson, HttpStatus.CREATED);
+        //System.out.println("Creating: "+requestedPerson);
+        return personService.createPerson(requestedPerson);
     }
 
     // Update Person
-    // This works, but is there a way to make defaultValue=OriginalValue ?
+    // PUT :: you pass the whole object to overwrite whatever exists, but via PATCH w/ a JSON patch-map
+    //        one can also optionally add support for partial-overwrite, leaving other prior field data alone
     // Note :: Pass parameters via JSON in Postman to test like the above one, but now including ID
     @PutMapping("/person/{id}")
     public ResponseEntity<Person> updatePerson(@PathVariable int id, @RequestBody Person requestedPerson){
         try{
-            Person updatedPerson = personRepository.save(requestedPerson);
-            return new ResponseEntity<>(updatedPerson, HttpStatus.ACCEPTED);
+            return personService.updatePerson(requestedPerson);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -62,13 +66,7 @@ public class PersonController {
     // Delete Person
     @DeleteMapping("/person/{id}")
     public ResponseEntity deletePerson(@PathVariable int id){
-        // could also be .deleteAllById()
-        try {
-            personRepository.deleteById(id);
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return personService.deletePerson(id);
     }
 
     @PostMapping("/db")
@@ -85,7 +83,7 @@ public class PersonController {
         Person chuckE = new Person("Chuck E.", "Cheese", 45);
         personRepository.save(chuckE);
 
-        Person appleseed = new Person("Kakashi", "Hatake", 37);
+        Person appleseed = new Person("Johnny", "Appleseed", 37);
         personRepository.save(appleseed);
 
         return new ResponseEntity(HttpStatus.OK);
@@ -98,17 +96,11 @@ public class PersonController {
     }
 
     // ... Beyond Scope Code Below ... Retained for Reference ...
-
-    // Get records by last name (not required by spec, just wanted to try writing an interface + use String parameter
+    // Get records by last name
     @GetMapping("/personByLastName/{LastName}")
     public Object tryGetID(@PathVariable String LastName) {
-        return personRepository.findByLastName(LastName);
-    }
-
-    @GetMapping("/personTemp")
-    // This request-param annotation
-    public Person getPerson(@RequestParam(value="firstName", defaultValue="defaultFirst") String firstName) {
-        return new Person(1, firstName, "Doherty", 25);
+        //return personRepository.findByLastName(LastName);
+        return personService.findByLastName(LastName);
     }
 }
 
