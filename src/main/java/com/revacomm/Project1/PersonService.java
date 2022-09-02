@@ -28,24 +28,22 @@ public class PersonService {
     }
 
     public ResponseEntity<Person> createPerson(Person requestedPerson){
-
         String firstName = requestedPerson.getFirstName();
         String lastName = requestedPerson.getLastName();
 
         List<Person> lastNameMatches = personRepo.findByLastNameIgnoreCase(lastName);
-        // System.out.println("LastName=" + lastName + " :: " + lastNameMatches);
 
-        //// IF :: any records have a matching last name
+        // IF :: any records have a matching last name
         if(lastNameMatches.size() > 0){
             lastNameMatches.forEach(each -> {
-                //// THEN :: ensure they don't also have the same first name
+                // THEN :: ensure they don't also have the same first name
                 if(each.getFirstName().toLowerCase().equals(firstName.toLowerCase())){
+                    // If they do, throw exception
                     throw new RecordAlreadyExistsException("Test TEST test");
                 }
             });
         }
 
-        // OG Code
         Person newPerson = personRepo.save(requestedPerson);
         return new ResponseEntity<>(newPerson, HttpStatus.CREATED);
     }
