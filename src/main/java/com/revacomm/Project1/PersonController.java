@@ -33,26 +33,6 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @PutMapping("/testCatchDuplicate/{firstName}/{lastName}")
-    public void testCatchDuplicate(@PathVariable String firstName, @PathVariable String lastName){
-        List<Person> lastNameMatches = personRepository.findByLastNameIgnoreCase(lastName);
-        // System.out.println("LastName=" + lastName + " :: " + lastNameMatches);
-
-        //// IF :: any records have a matching last name
-        if(lastNameMatches.size() > 0){
-            lastNameMatches.forEach(each -> {
-                //// THEN :: ensure they don't also have the same first name
-                if(each.getFirstName().toLowerCase().equals(firstName.toLowerCase())){
-                    throw new RecordAlreadyExistsException("Test TEST test");
-                }
-            });
-        }
-        else{
-            // do the thing
-            System.out.print("Do the Thing");
-        }
-    }
-
     // Returns all records
     @GetMapping("/person")
     public Object getAllEmployees(){
