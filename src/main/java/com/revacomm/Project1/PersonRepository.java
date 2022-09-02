@@ -4,5 +4,6 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 public interface PersonRepository extends CrudRepository<Person, Integer> {
-    List<Person> findByLastName(String lastName);
+    List<Person> findByFirstNameIgnoreCase(String firstName);
+    List<Person> findByLastNameIgnoreCase(String lastName);
 }
