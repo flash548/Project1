@@ -1,8 +1,10 @@
 package com.revacomm.Project1;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.revacomm.Project1.exception.RecordAlreadyExistsException;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +17,7 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepo;
 
-    public void test2(){
-        System.out.println("... TRIGGER ...");
-    }
-
-    public Object getAllEmployees(){
+    public Iterable<Person> getAllEmployees(){
         return personRepo.findAll();
     }
 
@@ -27,50 +25,48 @@ public class PersonService {
         return personRepo.findById(id);
     }
 
-    public ResponseEntity<Person> createPerson(Person requestedPerson){
-        Person newPerson = personRepo.save(requestedPerson);
-        return new ResponseEntity<>(newPerson, HttpStatus.CREATED);
+    public Person createPerson(Person requestedPerson){
+        String firstName = requestedPerson.getFirstName();
+        String lastName = requestedPerson.getLastName();
+
+        List<Person> lastNameMatches = personRepo.findByLastNameIgnoreCase(lastName);
+
+        // IF :: any records have a matching last name
+        if(lastNameMatches.size() > 0){
+            lastNameMatches.forEach(each -> {
+                // THEN :: ensure they don't also have the same first name
+                if(each.getFirstName().toLowerCase().equals(firstName.toLowerCase())){
+                    // If they do, throw exception
+                    throw new RecordAlreadyExistsException("Record Already Found Matching First Name + Last Name");
+                }
+            });
+        }
+
+        personRepo.save(requestedPerson);
+        return(requestedPerson);
     }
 
-    public ResponseEntity<Person> updatePerson(Person requestedPerson){
+    public Person updatePerson(Person requestedPerson){
         Person updatedPerson = personRepo.save(requestedPerson);
-        return new ResponseEntity<>(updatedPerson, HttpStatus.ACCEPTED);
+        return requestedPerson;
     }
 
-    public ResponseEntity deletePerson(int id){
+    public boolean deletePerson(int id){
         try{
             // could also be .deleteAllById()
             personRepo.deleteById(id);
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return true;
         } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return false;
         }
     }
 
+    public Object findByFirstName(String firstName){
+        return(personRepo.findByFirstNameIgnoreCase(firstName));
+    }
+
     public Object findByLastName(String lastName){
-        return(personRepo.findByLastName(lastName));
+        return(personRepo.findByLastNameIgnoreCase(lastName));
     }
 
-    public void test() {
-        // Save a new person
-        System.out.println("Triggered PersonService");
-        Person newPerson = new Person(12372, "John", "Mayer", 42);
-        personRepo.save(newPerson);
-
-        // Find a person by ID
-        Optional<Person> result = personRepo.findById(201010);
-        result.ifPresent(person -> System.out.println(person));
-
-        // Find people by last name
-        List<Person> people = personRepo.findByLastName("Smith");
-        people.forEach(person -> System.out.println(person));
-
-        // List all people
-        Iterable<Person> iterator = personRepo.findAll();
-        iterator.forEach(person -> System.out.println(person));
-
-        // Count number of people
-        long count = personRepo.count();
-        System.out.println("Number of people: " + count);
-    }
 }
