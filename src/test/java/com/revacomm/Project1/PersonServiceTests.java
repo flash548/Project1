@@ -7,8 +7,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+
+import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonServiceTests {
@@ -31,4 +38,30 @@ public class PersonServiceTests {
         ));
         assertEquals(1, Lists.newArrayList(personService.getAllEmployees()).size());
     }
+
+    // https://mkyong.com/spring-boot/mockito-how-to-mock-repository-findbyid-thenreturn-optional/
+    // " no suitable method found for thenReturn ...
+    // method org.mockito.stubbing.OngoingStubbing.thenReturn is not applicable"
+    @Test
+    void testGetEmployeeByID(){
+        Mockito.when(personRepository.findById(anyInt())).thenReturn(Optional.of(Person.builder()
+                .firstName("McCoy")
+                .lastName("Doherty")
+                .age(25)
+                .build()
+        ));
+        assertEquals(1, Lists.newArrayList(personService.getEmployeeByID(anyInt())).size());
+        assertEquals(1, Lists.newArrayList(personService.getEmployeeByID(27)).size());
+    }
+
+    // whoops purge this, written pretty wrong
+    /*
+    @Test
+    void testCreatePerson(){
+        // Test that you can create a new person and get back the right HTTP code
+        // Test that you can't create a duplicate of a person that exists
+
+        assertEquals(HttpStatus.CREATED, personService.createPerson(new Person("mccoy","doherty",20)).getStatusCode());
+    }
+    */
 }

@@ -21,6 +21,7 @@ import java.util.List;
   To-Do List
     - Shift DB create // delete code elsewhere then drop the personRepo import
     - Testing
+    - Ensure proper "we already made this" exception return in POST to /person
 */
 
 @RestController
@@ -49,7 +50,13 @@ public class PersonController {
     // Note :: Pass parameters via JSON in PostMan to test this, but not path variables like before
     @PostMapping("/person/")
     public ResponseEntity<Person> createPerson(@RequestBody Person requestedPerson){
-        return personService.createPerson(requestedPerson);
+        try{
+            personService.createPerson(requestedPerson);
+            return new ResponseEntity<>(requestedPerson, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Does this get returned instead of custom exception? Come back to check into this eventually
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Update Person
@@ -59,7 +66,8 @@ public class PersonController {
     @PutMapping("/person/{id}")
     public ResponseEntity<Person> updatePerson(@PathVariable int id, @RequestBody Person requestedPerson){
         try{
-            return personService.updatePerson(requestedPerson);
+            personService.updatePerson(requestedPerson);
+            return new ResponseEntity<>(requestedPerson, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -68,7 +76,12 @@ public class PersonController {
     // Delete Person
     @DeleteMapping("/person/{id}")
     public ResponseEntity deletePerson(@PathVariable int id){
-        return personService.deletePerson(id);
+        try {
+            personService.deletePerson(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/db")
