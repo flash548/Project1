@@ -29,4 +29,15 @@ public class Person {
     public String toString() {
         return "Name: " + this.getFirstName() + " " + this.getLastName() + " (age: " + this.getAge() + ")";
     }
+
+    public boolean equals(Person otherPerson) {
+        if(this.getClass()==otherPerson.getClass()){
+            if(this.getFirstName().equals(otherPerson.getFirstName()) &&
+                    this.getLastName().equals(otherPerson.getLastName()) &&
+                    this.getId() == otherPerson.getId()){
+                return(true);
+            }
+        }
+        return(false);
+    }
 }

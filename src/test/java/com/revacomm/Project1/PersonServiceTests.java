@@ -55,13 +55,20 @@ public class PersonServiceTests {
     }
 
     // whoops purge this, written pretty wrong
-    /*
     @Test
     void testCreatePerson(){
         // Test that you can create a new person and get back the right HTTP code
         // Test that you can't create a duplicate of a person that exists
 
-        assertEquals(HttpStatus.CREATED, personService.createPerson(new Person("mccoy","doherty",20)).getStatusCode());
+        Mockito.when(personRepository.save(any(Person.class))).thenReturn(Person.builder()
+                .firstName("McTest")
+                .lastName("Testerman")
+                .age(25)
+                .build()
+        );
+
+        Person testGuy = new Person("McTest", "Testerman",25);
+        assert(testGuy.equals(personService.createPerson(new Person("McTest","Testerman",25))));
     }
-    */
+
 }
